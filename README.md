@@ -10,7 +10,7 @@ Start docker desktop on your machine if it´s not already started
 
 ```dockerdesktop```
 ## Cdxgen 
-Start Cdxgen server to create sbom content, this will spin up the docker container for you.
+Start Cdxgen server to create sbom content, this will spin up the docker container for you. Make sure that you set the property ```sdxGenServerVolumeMount``` in the ```PowerCommandsConfiguration.yaml``` configuration file first.
 
 ```cdxgen```
 
