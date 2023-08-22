@@ -3,7 +3,7 @@ using PainKiller.PowerCommands.Core.Commands;
 namespace SecToolsCommands.Commands;
 
 [PowerCommandDesign( description: "Create a sbom file in current directory, named directory or git repo",
-                         options: "path",
+                         options: "path|name",
                          example: "sbom")]
 public class SbomCommand : CommandBase<PowerCommandsConfiguration>
 {
@@ -17,6 +17,10 @@ public class SbomCommand : CommandBase<PowerCommandsConfiguration>
         var httpClient = new HttpClient();
         var jsonData = httpClient.GetStringAsync(url).Result;
         WriteLine(jsonData);
+        var name = GetOptionValue("name");
+        var fileName = Path.Combine(Configuration.SdxGenServerVolumeMount, string.IsNullOrEmpty(name) ? "default-sbom.json" : $"{name}-sbom.json");
+        File.WriteAllText(fileName, jsonData);
+        WriteSuccessLine($"{fileName} saved OK!");
         return Ok();
     }
 }

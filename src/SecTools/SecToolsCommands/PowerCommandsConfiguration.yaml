@@ -7,6 +7,7 @@ configuration:
   backupPath: ..\..\..\..\Core\PainKiller.PowerCommands.Core\
   pathToDockerDesktop: C:\Program Files\Docker\Docker  
   sdxGenServerVolumeMount: E:\Temp\Cdxgen_server
+  urlToDockerComposeFile: https://dependencytrack.org/docker-compose.yml
   startupToolbar:
     hideToolbarOption: OnCommandHighlighted
     toolbarItems:
