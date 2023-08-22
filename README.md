@@ -7,10 +7,11 @@ You need DockerDesktop or equivalent software installed to run Cdxgen Sbom creat
 
 ## Dockerdesktop
 Start docker desktop on your machine if it´s not already started
-```dockerdesktop```
 
+```dockerdesktop```
 ## Cdxgen 
 Start Cdxgen server to create sbom content, this will spin up the docker container for you.
+
 ```cdxgen```
 
 <img src="cdxgen.png" alt="cdxgen" width="128">
@@ -21,8 +22,11 @@ Start Cdxgen server to create sbom content, this will spin up the docker contain
 Create sbom content from a local path or github repository
 
 **Local path**
+
 ```sbom --path <local path>```
+
 **Github repository**
+
 ```sbom --path https://github.com/PowerCommands/PowerCommands2022.git```
 
 Read more about SBOM: https://www.cisa.gov/sbom
