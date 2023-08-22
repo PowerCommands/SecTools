@@ -12,7 +12,8 @@ Start docker desktop on your machine if it´s not already started
 ## Cdxgen 
 Start Cdxgen server to create sbom content, this will spin up the docker container for you.
 ```cdxgen```
-<img src="cdxgen.png" alt="cdxgen" width="64">
+<img src="cdxgen.png" alt="cdxgen" width="128">
+
 [CycloneDX Generator](https://github.com/CycloneDX/cdxgen) is an open source project published on github. 
 
 ## Sbom
