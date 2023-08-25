@@ -5,6 +5,7 @@
         public string PathToDockerDesktop { get; set; } = "";
         public string SdxGenServerVolumeMount { get; set; } = "";
         public string UrlToDockerComposeFile { get; set; } = "";
+        public string UrlToDepencancyTracker { get; set; } = "";
         public ToolbarConfiguration? StartupToolbar { get; set; }
     }
 }

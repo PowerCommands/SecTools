@@ -8,6 +8,7 @@ configuration:
   pathToDockerDesktop: C:\Program Files\Docker\Docker  
   sdxGenServerVolumeMount: E:\Temp\Cdxgen_server
   urlToDockerComposeFile: https://dependencytrack.org/docker-compose.yml
+  urlToDepencancyTracker: "http://localhost:8080"
   startupToolbar:
     hideToolbarOption: OnCommandHighlighted
     toolbarItems:
@@ -39,7 +40,10 @@ configuration:
       path: C:\Program Files
       index: 0
   secret:
-    secrets:    
+    secrets:
+    - name: DT_PowerCommand
+      options:
+        target: User
   environment:
     variables:
     - name: OS
