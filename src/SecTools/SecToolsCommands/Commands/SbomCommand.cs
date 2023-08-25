@@ -12,34 +12,6 @@ namespace SecToolsCommands.Commands;
 public class SbomCommand : CommandBase<PowerCommandsConfiguration>
 {
     public SbomCommand(string identifier, PowerCommandsConfiguration configuration) : base(identifier, configuration) { }
-
-    public override RunResult Run()
-    {
-        var path = Input.SingleArgument;
-        if (string.IsNullOrEmpty(path)) path = CdCommand.WorkingDirectory;
-        var url = $"http://127.0.0.1:9090/sbom?path={path}";
-        var httpClient = new HttpClient();
-        var jsonData = httpClient.GetStringAsync(url).Result;
-        WriteLine(jsonData);
-        var name = GetOptionValue("name");
-        var fileName = Path.Combine(Configuration.SdxGenServerVolumeMount, string.IsNullOrEmpty(name) ? "default.bom" : $"{name}.bom");
-        File.WriteAllText(fileName, jsonData);
-
-        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true, };
-        var sbom = JsonSerializer.Deserialize<SbomV14>(jsonData, options) ?? new();
-        
-        WriteCodeExample("sbom.components.length", $"{sbom.components.Length}");
-
-        WriteSuccessLine($"{fileName} saved OK!");
-
-        if (HasOption("upload"))
-        {
-            var apiUrl = "http://localhost:8081/api/v1/bom";
-            DependencyTrackApiManager.PostSbom(apiUrl, jsonData, name, Configuration.Secret.DecryptSecret("##DT_PowerCommand##"));
-        }
-        return Ok();
-    }
-
     public override async Task<RunResult> RunAsync()
     {
         var path = Input.SingleArgument;
