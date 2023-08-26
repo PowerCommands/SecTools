@@ -20,6 +20,11 @@ namespace PainKiller.PowerCommands.Bootstrap
                 ConsoleService.Service.WriteSuccessLine(nameof(Startup), "\nFirst startup basic application configuration completed...");
                 ConsoleService.Service.WriteSuccessLine(nameof(Startup), "You will need to restart the application before the changes take effect.");
             }
+            if (!Directory.Exists(PowerCommandsConfiguration.AppDataFolder))
+            {
+                Directory.CreateDirectory(PowerCommandsConfiguration.AppDataFolder);
+                Directory.CreateDirectory(PowerCommandsConfiguration.AppDataFolderDependencyTrack);
+            }
             var services = PowerCommandServices.Service;
 
             services.Configuration.Environment.InitializeValues();

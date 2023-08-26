@@ -2,10 +2,11 @@
 {
     public class PowerCommandsConfiguration : CommandsConfiguration
     {
-        public string PathToDockerDesktop { get; set; } = "";
-        public string SdxGenServerVolumeMount { get; set; } = "";
-        public string UrlToDockerComposeFile { get; set; } = "";
-        public string UrlToDepencancyTracker { get; set; } = "";
+        public static string AppDataFolder = Path.Combine(ConfigurationGlobals.ApplicationDataFolder, "SecTools");
+        public static string AppDataFolderDependencyTrack = Path.Combine(ConfigurationGlobals.ApplicationDataFolder, "SecTools","dependencytrack");
+        public DockerDesktopConfiguration DockerDesktop { get; set; } = new();
+        public CdxgenConfiguration Cdxgen { get; set; } = new();
+        public DependencyTrackerConfiguration DependencyTracker { get; set; } = new();
         public ToolbarConfiguration? StartupToolbar { get; set; }
     }
 }

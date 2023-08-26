@@ -1,3 +1,5 @@
+using SecToolsCommands.Managers;
+
 namespace SecToolsCommands.Commands;
 
 [PowerCommandDesign( description: "Start Docker Desktop",
@@ -8,9 +10,7 @@ public class DockerDesktopCommand : CommandBase<PowerCommandsConfiguration>
 
     public override RunResult Run()
     {
-        var fullFileName = Path.Combine(Configuration.PathToDockerDesktop, "Docker Desktop.exe");
-        ShellService.Service.Execute(fullFileName, arguments: "", workingDirectory: "", WriteLine, fileExtension: "");
-        WriteSuccessLine("Docker Desktop started");
+        DockerDesktopManager.StartDockerDesktop(Configuration.DockerDesktop.Path, Configuration.DockerDesktop.StartupTime);
         return Ok();
     }
 }

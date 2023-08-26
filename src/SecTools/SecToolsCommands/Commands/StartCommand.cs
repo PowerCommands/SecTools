@@ -1,4 +1,4 @@
-using PainKiller.PowerCommands.Core.Commands;
+using SecToolsCommands.Managers;
 
 namespace SecToolsCommands.Commands;
 
@@ -11,28 +11,13 @@ public class StartCommand : CommandBase<PowerCommandsConfiguration>
 
     public override RunResult Run()
     {
-        var fullFileName = Path.Combine(Configuration.PathToDockerDesktop, "Docker Desktop.exe");
-        ShellService.Service.Execute(fullFileName, arguments: "", workingDirectory: "", WriteLine, fileExtension: "");
-        WriteSuccessLine("Docker Desktop started");
+        var fullFileName = Path.Combine(Configuration.DockerDesktop.Path, "Docker Desktop.exe");
+        DockerDesktopManager.StartDockerDesktop(fullFileName, Configuration.DockerDesktop.StartupTime);
 
-        ShellService.Service.Execute("docker", $"run --rm -v /tmp:/tmp -p 9090:9090 -v {Configuration.SdxGenServerVolumeMount}:/app:rw -t ghcr.io/cyclonedx/cdxgen:v8.6.0 -r /app --server --server-host 0.0.0.0", CdCommand.WorkingDirectory);
-        WriteSuccessLine("CycloneDX Generator server started");
+        var xCfg = Configuration.Cdxgen;
+        CycloneDxManager.Start(xCfg.HostMount, xCfg.ContainerMount, xCfg.HostPort, xCfg.ContainerPort, xCfg.SdxGenServerVolumeMount, xCfg.ImageUrl, xCfg.ServerHost);
 
-        var dockerComposeFileName = Path.Combine(AppContext.BaseDirectory, "docker-compose.yml");
-        if (!File.Exists(dockerComposeFileName))
-        {
-            var url = Configuration.UrlToDockerComposeFile;
-            var httpClient = new HttpClient();
-            var yamlData = httpClient.GetStringAsync(url).Result;
-
-            File.WriteAllText(dockerComposeFileName, yamlData);
-            WriteSuccessLine("Docker compose file downloaded and save in app directory.");
-        }
-
-        ShellService.Service.Execute("docker-compose", "up -d", CdCommand.WorkingDirectory);
-        WriteSuccessLine("Dependency Track container starting...");
-        PauseService.Pause(5);
-        ShellService.Service.OpenWithDefaultProgram(Configuration.UrlToDepencancyTracker, CdCommand.WorkingDirectory);
+        DependencyTrackManager.Start(Configuration.DependencyTracker.UrlToDockerComposeFile, Configuration.DependencyTracker.AdminUrl, Configuration.DependencyTracker.StartupTime);
         return Ok();
     }
 }
