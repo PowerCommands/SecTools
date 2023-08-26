@@ -34,7 +34,7 @@ public class SbomCommand : CommandBase<PowerCommandsConfiguration>
         if (HasOption("upload"))
         {
             var apiUrl = "http://localhost:8081/api/v1/bom";
-            var response = await DependencyTrackApiManager.PostSbom(apiUrl, fileName, name, Configuration.Secret.DecryptSecret("##DT_PowerCommand##"));
+            var response = await DependencyTrackApiManager.PostSbom(apiUrl, jsonData, name, Configuration.Secret.DecryptSecret("##DT_PowerCommand##"));
             if (response.StartsWith("Request failed with status code:")) WriteFailureLine(response);
             else WriteSuccessLine(response);
         }

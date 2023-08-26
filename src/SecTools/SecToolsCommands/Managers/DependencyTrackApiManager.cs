@@ -1,6 +1,4 @@
-﻿using PainKiller.PowerCommands.Core.Commands;
-
-namespace SecToolsCommands.Managers;
+﻿namespace SecToolsCommands.Managers;
 
 public static class DependencyTrackApiManager
 {
@@ -18,6 +16,5 @@ public static class DependencyTrackApiManager
 
         var responseBody = await response.Content.ReadAsStringAsync();
         return responseBody;
-
     }
 }
