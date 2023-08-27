@@ -26,7 +26,7 @@ namespace PainKiller.PowerCommands.Core.Services
             var secret = "";
             while (retryCount < maxRetries)
             {
-                WriteHeader($"\n{question} :");
+                WriteHeader($"\n{question} ");
                 secret = PasswordPromptService.Service.ReadPassword();
                 Console.WriteLine();
                 Console.Write("Confirm: ".PadLeft(question.Length + 1));
