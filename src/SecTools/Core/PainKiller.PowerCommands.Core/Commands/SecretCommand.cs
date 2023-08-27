@@ -3,9 +3,9 @@
 namespace PainKiller.PowerCommands.Core.Commands
 {
     [PowerCommandDesign(description: "Get, creates, removes or view secrets, first you need to configure your encryption key with initialize argument",
-                            options: "initialize|configuration|create|get|remove|salt",
+                            options: "create|initialize|configuration|remove|salt",
                  disableProxyOutput: true,
-                            example: "//View all declared secrets|secret|//Get the decrypted value of named secret|secret --get \"mycommand-pass\"|secret --create \"mycommand-pass\"|secret --remove \"mycommand-pass\"|//Initialize your machine with a new encryption key (stops if this is already done)|secret --initialize")]
+                            example: "//View all declared secrets|secret|secret --create \"mycommand-pass\"|secret --remove \"mycommand-pass\"|//Initialize your machine with a new encryption key (stops if this is already done)|secret --initialize")]
     public class SecretCommand : CommandBase<CommandsConfiguration>
     {
         public SecretCommand(string identifier, CommandsConfiguration configuration) : base(identifier, configuration) { }
@@ -14,7 +14,6 @@ namespace PainKiller.PowerCommands.Core.Commands
             if (Input.HasOption("initialize")) return Init();
             if (Input.HasOption("")) return CheckEncryptConfiguration();
             if (Input.HasOption("salt")) return Salt();
-            if (Input.HasOption("get")) return Get();
             if (Input.HasOption("create")) return Create();
             if (Input.HasOption("remove")) return Remove();
             if ((Input.Arguments.Length + Input.Quotes.Length < 2) && Input.Arguments.Length > 0) throw new MissingFieldException("Two parameters must be provided");
@@ -60,17 +59,6 @@ namespace PainKiller.PowerCommands.Core.Commands
         {
             if (Configuration.Secret.Secrets == null) return Ok();
             foreach (var secret in Configuration.Secret.Secrets) ConsoleService.Service.WriteObjectDescription($"{GetType().Name}", secret.Name, $"{string.Join(',', secret.Options.Keys)}");
-            return Ok();
-        }
-        private RunResult Get()
-        {
-            var name = Input.SingleQuote;
-            var secret = Configuration.Secret.Secrets.FirstOrDefault(s => s.Name.ToLower() == name.ToLower());
-            if (secret == null) return BadParameterError($"No secret with name \"{name}\" found.");
-
-            var val = SecretService.Service.GetSecret(name, secret.Options, EncryptionService.Service.DecryptString);
-            ConsoleService.Service.WriteObjectDescription($"{GetType().Name}", name, val);
-
             return Ok();
         }
         private RunResult Create()
