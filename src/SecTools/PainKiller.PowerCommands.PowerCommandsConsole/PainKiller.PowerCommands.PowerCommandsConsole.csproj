@@ -6,7 +6,7 @@
 		<LangVersion>10.0</LangVersion>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<AssemblyName>pc</AssemblyName>
+		<AssemblyName>p-sec-tools</AssemblyName>
 		<Version>0.5.0.0</Version>
 	</PropertyGroup>
 
