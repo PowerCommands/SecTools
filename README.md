@@ -1,7 +1,7 @@
 # PainKiller Security Tools
 <img src="logo.png" alt="cdxgen" width="512">
 
-This repo contains a Power Command Console project with different commands with some kind of security purpose
+This repo contains a Power Command Console project that combines **CycloneDX** and **Dependency Track** to let you create SBOM files from git repos and import them in to OWASP Dependency Track which gives you a nice GUI where you can analyze your repos vulnerabilities. 
 
 # Prerequisites
 If this is the first time you use a Power Commands implementation a encryption setup will be done at the first startup. The encryption key is setup for all Power Commands projects and is unique for every machine. Encryption is used by this Power Commands project to secure your **Dependency Track** API key.
