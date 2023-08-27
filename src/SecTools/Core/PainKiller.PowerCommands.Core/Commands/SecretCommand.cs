@@ -1,97 +1,93 @@
 ﻿using PainKiller.PowerCommands.Security.Services;
 
-namespace PainKiller.PowerCommands.Core.Commands
+namespace PainKiller.PowerCommands.Core.Commands;
+
+[PowerCommandDesign(description: "Get, creates, removes or view secrets, first you need to configure your encryption key with initialize argument",
+    options: "create|initialize|configuration|remove|salt",
+    disableProxyOutput: true,
+    example: "//View all declared secrets|secret|secret --create \"mycommand-pass\"|secret --remove \"mycommand-pass\"|//Initialize your machine with a new encryption key (stops if this is already done)|secret --initialize")]
+public class SecretCommand : CommandBase<CommandsConfiguration>
 {
-    [PowerCommandDesign(description: "Get, creates, removes or view secrets, first you need to configure your encryption key with initialize argument",
-                            options: "create|initialize|configuration|remove|salt",
-                 disableProxyOutput: true,
-                            example: "//View all declared secrets|secret|secret --create \"mycommand-pass\"|secret --remove \"mycommand-pass\"|//Initialize your machine with a new encryption key (stops if this is already done)|secret --initialize")]
-    public class SecretCommand : CommandBase<CommandsConfiguration>
+    public SecretCommand(string identifier, CommandsConfiguration configuration) : base(identifier, configuration) { }
+    public override RunResult Run()
     {
-        public SecretCommand(string identifier, CommandsConfiguration configuration) : base(identifier, configuration) { }
-        public override RunResult Run()
+        if (Input.HasOption("initialize")) return Init();
+        if (Input.HasOption("")) return CheckEncryptConfiguration();
+        if (Input.HasOption("salt")) return Salt();
+        if (Input.HasOption("create")) return Create();
+        if (Input.HasOption("remove")) return Remove();
+        if ((Input.Arguments.Length + Input.Quotes.Length < 2) && Input.Arguments.Length > 0) throw new MissingFieldException("Two parameters must be provided");
+        if (Input.Arguments.Length == 0 || Input.Arguments[0] == "view") return List();
+
+        return BadParameterError("No matching parameter");
+    }
+    private RunResult CheckEncryptConfiguration()
+    {
+        try
         {
-            if (Input.HasOption("initialize")) return Init();
-            if (Input.HasOption("")) return CheckEncryptConfiguration();
-            if (Input.HasOption("salt")) return Salt();
-            if (Input.HasOption("create")) return Create();
-            if (Input.HasOption("remove")) return Remove();
-            if ((Input.Arguments.Length + Input.Quotes.Length < 2) && Input.Arguments.Length > 0) throw new MissingFieldException("Two parameters must be provided");
-            if (Input.Arguments.Length == 0 || Input.Arguments[0] == "view") return List();
-
-            return BadParameterError("No matching parameter");
+            var encryptedString = EncryptionService.Service.EncryptString("Encryption is setup properly");
+            var decryptedString = EncryptionService.Service.DecryptString(encryptedString);
+            WriteLine(encryptedString);
+            WriteLine(decryptedString);
         }
-        private RunResult CheckEncryptConfiguration()
+        catch
         {
-            try
-            {
-                var encryptedString = EncryptionService.Service.EncryptString("Encryption is setup properly");
-                var decryptedString = EncryptionService.Service.DecryptString(encryptedString);
-                WriteLine(encryptedString);
-                WriteLine(decryptedString);
-            }
-            catch
-            {
-                Console.WriteLine("");
-                WriteError("Encryption is not configured properly");
-            }
-            return Ok();
+            Console.WriteLine("");
+            WriteError("Encryption is not configured properly");
         }
-        private RunResult Salt()
-        {
-            Console.WriteLine(IEncryptionService.GetRandomSalt());
-            return Ok();
-        }
+        return Ok();
+    }
+    private RunResult Salt()
+    {
+        Console.WriteLine(IEncryptionService.GetRandomSalt());
+        return Ok();
+    }
 
-        private RunResult Init()
-        {
-            var firstHalf = IEncryptionService.GetRandomSalt(); ;
-            var secondHalf = IEncryptionService.GetRandomSalt(); ;
-            Environment.SetEnvironmentVariable("_encryptionManager", firstHalf, EnvironmentVariableTarget.User);
-            var securityConfig = new SecurityConfiguration { Encryption = new EncryptionConfiguration { SharedSecretEnvironmentKey = "_encryptionManager", SharedSecretSalt = secondHalf } };
-            var fileName = Path.Combine(ConfigurationGlobals.ApplicationDataFolder, ConfigurationGlobals.SecurityFileName);
-            ConfigurationService.Service.Create(securityConfig, fileName);
-            WriteSuccessLine($"File {fileName} saved OK, you will need to restart the application before the changes take effect.");
-            return Ok();
-        }
+    private RunResult Init()
+    {
+        var firstHalf = IEncryptionService.GetRandomSalt(); 
+        var secondHalf = IEncryptionService.GetRandomSalt(); 
+        Environment.SetEnvironmentVariable("_encryptionManager", firstHalf, EnvironmentVariableTarget.User);
+        var securityConfig = new SecurityConfiguration { Encryption = new EncryptionConfiguration { SharedSecretEnvironmentKey = "_encryptionManager", SharedSecretSalt = secondHalf } };
+        var fileName = Path.Combine(ConfigurationGlobals.ApplicationDataFolder, ConfigurationGlobals.SecurityFileName);
+        ConfigurationService.Service.Create(securityConfig, fileName);
+        WriteSuccessLine($"File {fileName} saved OK, you will need to restart the application before the changes take effect.");
+        return Ok();
+    }
 
-        private RunResult List()
-        {
-            if (Configuration.Secret.Secrets == null) return Ok();
-            foreach (var secret in Configuration.Secret.Secrets) ConsoleService.Service.WriteObjectDescription($"{GetType().Name}", secret.Name, $"{string.Join(',', secret.Options.Keys)}");
-            return Ok();
-        }
-        private RunResult Create()
-        {
-            var name = Input.SingleQuote;
-            var password = DialogService.SecretPromptDialog("Enter secret:");
-            if (string.IsNullOrEmpty(password)) return BadParameterError("Passwords do not match");
+    private RunResult List()
+    {
+        foreach (var secret in Configuration.Secret.Secrets) ConsoleService.Service.WriteObjectDescription($"{GetType().Name}", secret.Name, $"{string.Join(',', secret.Options.Keys)}");
+        return Ok();
+    }
+    private RunResult Create()
+    {
+        var name = Input.SingleQuote;
+        var password = DialogService.SecretPromptDialog("Enter secret:");
+        if (string.IsNullOrEmpty(password)) return BadParameterError("Passwords do not match");
 
-            var secret = new SecretItemConfiguration { Name = name };
-            var val = SecretService.Service.SetSecret(name, password, secret.Options, EncryptionService.Service.EncryptString);
+        var secret = new SecretItemConfiguration { Name = name };
+        var val = SecretService.Service.SetSecret(name, password, secret.Options, EncryptionService.Service.EncryptString);
 
-            Configuration.Secret ??= new();
-            Configuration.Secret.Secrets ??= new();
-            Configuration.Secret.Secrets.Add(secret);
-            ConfigurationService.Service.SaveChanges(Configuration);
-            Console.WriteLine();
-            WriteHeadLine("New secret created and stored in configuration file");
-            ConsoleService.Service.WriteObjectDescription($"{GetType().Name}", name, val);
+        Configuration.Secret.Secrets.Add(secret);
+        ConfigurationService.Service.SaveChanges(Configuration);
+        Console.WriteLine();
+        WriteHeadLine("New secret created and stored in configuration file");
+        ConsoleService.Service.WriteObjectDescription($"{GetType().Name}", name, val);
 
-            return Ok();
-        }
-        private RunResult Remove()
-        {
-            var name = Input.SingleQuote;
+        return Ok();
+    }
+    private RunResult Remove()
+    {
+        var name = Input.SingleQuote;
 
-            var secret = Configuration.Secret.Secrets.FirstOrDefault(s => s.Name.ToLower() == name.ToLower());
-            if (secret == null) return BadParameterError($"No secret with name \"{name}\" found.");
+        var secret = Configuration.Secret.Secrets.FirstOrDefault(s => s.Name.ToLower() == name.ToLower());
+        if (secret == null) return BadParameterError($"No secret with name \"{name}\" found.");
 
-            Configuration.Secret.Secrets.Remove(secret);
-            ConfigurationService.Service.SaveChanges(Configuration);
+        Configuration.Secret.Secrets.Remove(secret);
+        ConfigurationService.Service.SaveChanges(Configuration);
 
-            WriteHeadLine("Secret removed from configuration file\nManually remove the secret key from environment variables or vault depending on how they are stored.");
-            return Ok();
-        }
+        WriteHeadLine("Secret removed from configuration file\nManually remove the secret key from environment variables or vault depending on how they are stored.");
+        return Ok();
     }
 }

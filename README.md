@@ -58,12 +58,11 @@ Read more about Power Commands: https://github.com/PowerCommands/PowerCommands20
 
 Read more about SBOM: https://www.cisa.gov/sbom
 
-## CycloneDX Generator
-<img src="cdxgen.png" alt="cdxgen" width="128">
+<img src="dt_cdxgen_logos.png" alt="Dependency Track logo" width="256">
 
+## CycloneDX Generator
 [CycloneDX Generator](https://github.com/CycloneDX/cdxgen) on github. 
 
 ## Dependency Track
-<img src="dt-logo.svg" alt="Dependency Track logo" width="256">
 
 [Dependency Track](https://github.com/CycloneDX/cdxgen) on github. 
