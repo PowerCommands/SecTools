@@ -8,7 +8,7 @@ If this is the first time you use a Power Commands implementation a encryption s
 
 This application is intended to use **CycloneDX** and **Dependency Track** software running as container, therefore you need to have Docker Desktop installed, this way you do not need to install software on your machine besides this Power Commands console application. Setup Docker Desktop is however not described in this documentation. 
 
-If you want to setup **CycloneDX** and **Dependency Track** in any other way, I recommend you to look at their respective documentation, links to their repos are present at the end of this document. You also need to adjust the ```PowerCommandsConfiguration.yaml``` configuration file with the appropriate API endpoints. You do not need to run the ```start``` command if the software is installed and already running on your machine or a server else where.
+If you want to setup **CycloneDX** and **Dependency Track** in any other way, I recommend you to look at their respective documentation, links to their repos are present at the end of this document. You also need to adjust the ```PowerCommandsConfiguration.yaml``` configuration file with the appropriate API endpoints. You do not need to run the ```start``` command nor the ```setup --docker``` command if the software is installed and already running on your machine or a server else where.
 
 ## Setup 
 ### Setup docker containers
