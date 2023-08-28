@@ -43,9 +43,9 @@ You can create the files and add them to **Dependency Track** manually in the GU
 
 After that copy the API key and create a secret in PowerCommands with this command.
 
-```secret --create "DT_PowerCommand"```
+```setup dt-key```
 
-After this configuration sbom will be uploaded to **Dependency Track**.
+After this configuration is done, the sbom content will be uploaded to **Dependency Track**.
 
 ## Sbom
 Create sbom content from a local path or github repository
