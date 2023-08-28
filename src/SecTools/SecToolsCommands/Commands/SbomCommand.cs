@@ -20,7 +20,7 @@ public class SbomCommand : CommandBase<PowerCommandsConfiguration>
 
         if (HasOption("upload"))
         {
-            var response = await DependencyTrackManager.PostSbom(Configuration.DependencyTracker.SbomApiUrl, jsonData, name, Configuration.Secret.DecryptSecret("##DT_PowerCommand##"));
+            var response = await DependencyTrackManager.PostSbom($"{Configuration.DependencyTracker.ApiUrl}{Configuration.DependencyTracker.SbomApiUrl}", jsonData, name, Configuration.Secret.DecryptSecret("##DT_PowerCommand##"));
             if (response.StartsWith("Request failed with status code:")) WriteFailureLine(response);
             else WriteSuccessLine(response);
         }

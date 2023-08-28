@@ -17,11 +17,12 @@ public class StartCommand : CommandBase<PowerCommandsConfiguration>
         var xCfg = Configuration.Cdxgen;
         CycloneDxManager.Start(xCfg.HostMount, xCfg.ContainerMount, xCfg.HostPort, xCfg.ContainerPort, xCfg.SdxGenServerVolumeMount, xCfg.ImageUrl, xCfg.ServerHost);
 
-        DependencyTrackManager.Start(Configuration.DependencyTracker.UrlToDockerComposeFile, Configuration.DependencyTracker.AdminUrl, Configuration.DependencyTracker.StartupTime);
+        var dCfg = Configuration.DependencyTracker;
+        DependencyTrackManager.Start(dCfg.ApiUrl, dCfg.ApiServerImage, dCfg.ApiServerContainer, dCfg.ApiPorts, dCfg.FrontendImage, dCfg.FrontendContainer, dCfg.FrontendPorts, dCfg.AdminUrl, dCfg.StartupTime);
 
         WriteHeadLine("You are now ready to create SBOM files\n");
         WriteLine("Notice that to automatically upload the SBOM to Dependency Track, you first need to do two things:");
-        WriteLine("1) Create a Team in Dependency Track give the Team BOM_UPLOAD, PROJECT_CREATION, PORTFOLIO_MANAGEMENT permissions");
+        WriteLine("1) Create a Team in Dependency Track give the Team BOM_UPLOAD, PROJECT_CREATION");
         WriteLine("2) Copy the API key, and create a secret in PowerCommands like this:");
         WriteCodeExample("secret","--create \"DT_PowerCommand\"");
 

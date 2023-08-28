@@ -19,19 +19,10 @@ public static class DependencyTrackManager
         var responseBody = await response.Content.ReadAsStringAsync();
         return responseBody;
     }
-
-    public static void Start(string urlToDockerComposeFile, string adminUrl, int startupTime)
+    public static void Start(string apiUrl, string apiServerImage, string apiServerContainer, string apiPorts, string frontendImage, string frontendContainer, string frontendPorts, string adminUrl, int startupTime)
     {
-        var dockerComposeFileName = Path.Combine(PowerCommandsConfiguration.AppDataFolderDependencyTrack, "docker-compose.yml");
-        if (!File.Exists(dockerComposeFileName))
-        {
-            var httpClient = new HttpClient();
-            var yamlData = httpClient.GetStringAsync(urlToDockerComposeFile).Result;
-            File.WriteAllText(dockerComposeFileName, yamlData);
-            ConsoleService.Service.WriteSuccessLine(nameof(DependencyTrackManager), "Docker compose file downloaded and save in app directory.");;
-        }
-
-        ShellService.Service.Execute("docker-compose", "up -d", PowerCommandsConfiguration.AppDataFolderDependencyTrack);
+        ShellService.Service.Execute("docker", $"run -d --name {apiServerContainer} -p {apiPorts} {apiServerImage}", "");
+        ShellService.Service.Execute("docker", $"run -d --name {frontendContainer} -e API_BASE_URL={apiUrl} -p {frontendPorts} --restart unless-stopped {frontendImage}", "");
         ConsoleService.Service.WriteSuccessLine(nameof(DependencyTrackManager), "Dependency Track container starting...");;
         
         PauseService.Pause(startupTime);

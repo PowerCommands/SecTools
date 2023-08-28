@@ -20,8 +20,15 @@ configuration:
   dependencyTracker:
     urlToDockerComposeFile: https://dependencytrack.org/docker-compose.yml    
     adminUrl: http://localhost:8080
-    sbomApiUrl: http://localhost:8081/api/v1/bom
+    apiUrl: http://localhost:8081
+    sbomApiUrl: /api/v1/bom
     startupTime: 5
+    apiServerImage: dependencytrack/apiserver
+    apiServerContainer: dtrack-apiserver
+    apiPorts: 8081:8080
+    frontendImage: dependencytrack/frontend    
+    frontendContainer: dtrack-frontend
+    frontendPorts: 8080:8080
   startupToolbar:
     hideToolbarOption: OnCommandHighlighted
     toolbarItems:

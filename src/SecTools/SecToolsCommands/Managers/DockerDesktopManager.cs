@@ -1,5 +1,4 @@
 ﻿namespace SecToolsCommands.Managers;
-
 public static class DockerDesktopManager
 {
     public static void StartDockerDesktop(string fullFileName, int startupTime)
@@ -21,5 +20,10 @@ public static class DockerDesktopManager
             else { ConsoleService.Service.WriteSuccessLine(nameof(StartDockerDesktop), "Docker Desktop seems to be running already.");}
         };
         ShellService.Service.Execute("docker", arguments: "info", workingDirectory: "", reader, fileExtension: "", waitForExit: true);
+    }
+    public static void Pull(string image)
+    {
+        Console.WriteLine($"Pull image {image}... please wait, result will not show before the whole process is done.");
+        ShellService.Service.Execute("docker", $"pull {image}", workingDirectory: "", waitForExit: true);
     }
 }

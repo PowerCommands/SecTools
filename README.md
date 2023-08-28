@@ -10,6 +10,21 @@ This application is intended to use **CycloneDX** and **Dependency Track** softw
 
 If you want to setup **CycloneDX** and **Dependency Track** in any other way, I recommend you to look at their respective documentation, links to their repos are present at the end of this document. You also need to adjust the ```PowerCommandsConfiguration.yaml``` configuration file with the appropriate API endpoints. You do not need to run the ```start``` command if the software is installed and already running on your machine or a server else where.
 
+## Setup 
+### Setup docker containers
+```setup --docker```
+
+This will pull down the docker images needed if you want to run this with Docker Desktop, which is:
+- ghcr.io/cyclonedx/cdxgen:v8.6.0
+- dependencytrack/apiserver
+- dependencytrack/frontend
+
+### Setup Dependency Track API key
+```setup dt-key```
+
+Paste the API key copied from the Dependency Track Admin, this is only needed if you intend to automatically import your sbom file into Dependency Track (and why shouldn't you do that?).
+You must of course start Dependency Track with the ```start``` command described below.
+
 ## Start
 ```start```
 
