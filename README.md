@@ -28,10 +28,13 @@ You must of course start Dependency Track with the ```start``` command described
 ## Start
 ```start```
 
+You do not need to run this command if your containers is already running or if you have CycloneDX and Dependency Track hosted on your machine or a server.
+
+<img src="containers_running.png" alt="Docker Containers running" width="800">
+
 **The following steps will be done by the ```start``` command**
  - Starts docker desktop on your machine if it´s not already started ()
- - Start Cdxgen server to create sbom content, this will spin up the docker container for you. Make sure that you set the property ```sdxGenServerVolumeMount``` in the ```PowerCommandsConfiguration.yaml``` configuration file first.
- - Download ```docker-compose.yaml file```, path must be set in configuration file, if the file is already downloaded, this step will be skipped, that way you can change settings in the compose file if you want.
+ - Start Cdxgen server to create sbom content, this will spin up the docker container for you. Make sure that you set the property ```sdxGenServerVolumeMount``` in the ```PowerCommandsConfiguration.yaml``` configuration file first. 
  - Start the Dependency Tracker Web GUI and API server. (Docker container) default url is: http://localhost:8080 login with ```admin```:```admin```
 
  NOTICE! The first time you run startup the containers needed to run by DockerDesktop on your machine will be downloaded, this could take some time, but you see the process in the console, have patience with that. 
@@ -66,6 +69,11 @@ If you add the --upload option, the sbom will also be uploaded to Dependency Tra
 ```sbom --path https://github.com/PowerCommands/PowerCommands2022.git --NAME <my-sbom-name> --upload```
 
 ___
+
+## Trouble shoot
+If you having trouble to start Dependency Track or login from Dependency Track, open Docker Desktop and make sure that the containers is running.
+
+<img src="containers_running.png" alt="Docker Containers running" width="800">
 
 ## Power Commands
 
