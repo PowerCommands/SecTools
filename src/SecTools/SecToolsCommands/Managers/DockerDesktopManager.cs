@@ -5,7 +5,7 @@ public static class DockerDesktopManager
     {
         Action<string> writer = s =>
         {
-            ConsoleService.Service.WriteLine(nameof(DockerDesktopManager), "babar");
+            ConsoleService.Service.WriteLine(nameof(DockerDesktopManager), s);
         };
         
         Action<string> reader = s =>
