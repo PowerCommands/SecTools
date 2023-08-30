@@ -21,7 +21,7 @@ public static class DependencyTrackManager
     }
     public static void Start(string apiUrl, string apiServerImage, string apiServerContainer, string apiPorts, string frontendImage, string frontendContainer, string frontendPorts, string adminUrl, int startupTime)
     {
-        ShellService.Service.Execute("docker", $"run -d --name {apiServerContainer} -p {apiPorts} {apiServerImage}", "");
+        ShellService.Service.Execute("docker", $"run -d --name {apiServerContainer} -p {apiPorts} --restart unless-stopped {apiServerImage}", "");
         ShellService.Service.Execute("docker", $"run -d --name {frontendContainer} -e API_BASE_URL={apiUrl} -p {frontendPorts} --restart unless-stopped {frontendImage}", "");
         ConsoleService.Service.WriteSuccessLine(nameof(DependencyTrackManager), "Dependency Track container starting...");;
         

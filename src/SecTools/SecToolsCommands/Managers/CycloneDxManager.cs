@@ -3,7 +3,7 @@ public static class CycloneDxManager
 {
     public static void Start(string hostMount, string containerMount, string hostPort, string containerPort, string sdxGenServerVolumeMount, string imageUrl, string serverHost)
     {
-        var arguments = $"run --rm -v {hostMount}:{containerMount} -p {hostPort}:{containerPort} -v {sdxGenServerVolumeMount}:/app:rw -t {imageUrl} -r /app --server --server-host {serverHost}";
+        var arguments = $"run --rm -v {hostMount}:{containerMount} -p {hostPort}:{containerPort} -v {sdxGenServerVolumeMount}:/app:rw -t {imageUrl} -r /app --server --server-host {serverHost} --restart unless-stopped";
         ShellService.Service.Execute("docker", arguments, "");
         ConsoleService.Service.WriteSuccessLine(nameof(CycloneDxManager), "CycloneDX Generator server ready!");
     }
