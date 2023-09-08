@@ -88,4 +88,4 @@ Read more about SBOM: https://www.cisa.gov/sbom
 
 ## Dependency Track
 
-[Dependency Track](https://github.com/CycloneDX/cdxgen) on github. 
+[Dependency Track Community](https://github.com/DependencyTrack) on github. 
