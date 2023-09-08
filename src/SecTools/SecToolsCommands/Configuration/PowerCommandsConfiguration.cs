@@ -7,6 +7,7 @@
         public DockerDesktopConfiguration DockerDesktop { get; set; } = new();
         public CdxgenConfiguration Cdxgen { get; set; } = new();
         public DependencyTrackerConfiguration DependencyTracker { get; set; } = new();
+        public EpssConfiguration Epss { get; set; } = new();
         public ToolbarConfiguration? StartupToolbar { get; set; }
     }
 }

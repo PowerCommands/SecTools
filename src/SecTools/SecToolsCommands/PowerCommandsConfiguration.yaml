@@ -29,6 +29,8 @@ configuration:
     frontendImage: dependencytrack/frontend    
     frontendContainer: dtrack-frontend
     frontendPorts: 8080:8080
+  epss:
+    apiUrl: https://api.first.org/data/v1/epss?cve=
   startupToolbar:
     hideToolbarOption: OnCommandHighlighted
     toolbarItems:

@@ -71,8 +71,10 @@ namespace PainKiller.PowerCommands.Core.BaseClasses
         #endregion
 
         #region RunResult
-        protected RunResult Ok() => new(this, Input, _ouput.ToString(), RunResultStatus.Ok);
-        protected RunResult Quit() => new(this, Input, _ouput.ToString(), RunResultStatus.Quit);
+        protected RunResult Ok(string message) => new(this, Input, $"{message} {_ouput}", RunResultStatus.Ok);
+        protected RunResult Ok() => Ok(_ouput.ToString());
+        protected RunResult Quit() => Quit(_ouput.ToString());
+        protected RunResult Quit(string message) => new(this, Input, $"{message} {_ouput}", RunResultStatus.Ok);
         protected RunResult BadParameterError(string output) => new(this, Input, output, RunResultStatus.ArgumentError);
         protected RunResult ExceptionError(string output) => new(this, Input, output, RunResultStatus.ExceptionThrown);
         protected RunResult ContinueWith(string rawInput) => new(this, Input, _ouput.ToString(), RunResultStatus.ExceptionThrown, rawInput);

@@ -3,6 +3,17 @@
 
 This repo contains a Power Command Console project that combines **CycloneDX** and **Dependency Track** to let you create SBOM files from git repos and import them in to OWASP Dependency Track which gives you a nice GUI where you can analyze your repos vulnerabilities. 
 
+There is also a command to get a Exploit Prediction score (EPSS) with a CVE as input. That command does not need any prerequisites at all.
+
+## Epss
+```epss <your CVE>```
+
+Returns  EPSS score for provided CVE, the value is percent where 0 is minimum and 100 is maximum. Read more about the score at the bottom of this page.
+
+### Example
+```epss CVE-2022-27225```
+
+
 # Prerequisites
 If this is the first time you use a Power Commands implementation a encryption setup will be done at the first startup. The encryption key is setup for all Power Commands projects and is unique for every machine. Encryption is used by this Power Commands project to secure your **Dependency Track** API key.
 
@@ -81,11 +92,18 @@ Read more about Power Commands: https://github.com/PowerCommands/PowerCommands20
 
 Read more about SBOM: https://www.cisa.gov/sbom
 
-<img src="dt_cdxgen_logos.png" alt="Dependency Track logo" width="256">
+<img src="dt_cdxgen_logos.png" alt="Dependency Track logo" width="512">
 
 ## CycloneDX Generator
 [CycloneDX Generator](https://github.com/CycloneDX/cdxgen) on github. 
 
 ## Dependency Track
 
-[Dependency Track Community](https://github.com/DependencyTrack) on github. 
+[Dependency Track Community](https://github.com/DependencyTrack) on github.
+
+## Exploit Prediction Scoring System (EPSS)
+
+[EPSS](https://www.first.org/epss/user-guide) user guide.
+
+EPSS provides a fundamentally new capability for efficient, data-driven vulnerability management. It is a data-driven effort that uses current threat information from CVE and real-world exploit data. The EPSS model produces a probability score between 0 and 1 (0 and 100%), where the higher the score, the greater the probability that a vulnerability will be exploited.
+
