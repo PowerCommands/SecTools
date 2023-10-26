@@ -26,7 +26,7 @@ If you want to setup **CycloneDX** and **Dependency Track** in any other way, I 
 ```setup --docker```
 
 This will pull down the docker images needed if you want to run this with Docker Desktop, which is:
-- ghcr.io/cyclonedx/cdxgen:v8.6.0
+- ghcr.io/cyclonedx/cdxgen:latest
 - dependencytrack/apiserver
 - dependencytrack/frontend
 
