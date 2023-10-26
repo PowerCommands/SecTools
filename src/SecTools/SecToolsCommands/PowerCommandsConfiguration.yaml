@@ -10,7 +10,7 @@ configuration:
     startupTime: 15
   cdxgen:
     sdxGenServerVolumeMount: E:\Temp\Cdxgen_server
-    imageUrl: ghcr.io/cyclonedx/cdxgen:v8.6.0 
+    imageUrl: ghcr.io/cyclonedx/cdxgen:latest 
     hostPort: "9090"
     containerPort: "9090"
     hostMount: /tmp
