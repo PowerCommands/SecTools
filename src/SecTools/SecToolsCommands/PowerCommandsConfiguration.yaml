@@ -17,6 +17,7 @@ configuration:
     containerMount: /tmp
     serverHost: "0.0.0.0"    
     sbomApiUrl: http://127.0.0.1:9090/sbom
+    resolveLicenses: true
   dependencyTracker:
     urlToDockerComposeFile: https://dependencytrack.org/docker-compose.yml    
     adminUrl: http://localhost:8080

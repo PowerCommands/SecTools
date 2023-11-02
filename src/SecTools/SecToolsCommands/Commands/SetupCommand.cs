@@ -23,13 +23,16 @@ public class SetupCommand : CommandBase<PowerCommandsConfiguration>
             DockerDesktopManager.Pull(Configuration.DependencyTracker.FrontendImage);
         
             WriteSuccessLine("\nDependency track setup done!");
+            return Ok();
         }
         else if (HasOption("dt-key"))
         {
             var secretCommand = new SecretCommand("secret", Configuration);
             secretCommand.InitializeAndValidateInput("secret --create \"DT_PowerCommand\"".Interpret());
             secretCommand.Run();
+            return Ok();
         }
+        WriteWarning("No option was provided, you need to provide either --docker to setup the docker images or --dt_key to setup the Dependency Track access token. (create a Team in DT Administration/Access management/Teams)");
         return Ok();
     }
 }

@@ -10,4 +10,5 @@ public class CdxgenConfiguration
     public string ContainerMount { get; set; } = "/tmp";
     public string ServerHost { get; set; } = "0.0.0.0";
     public string SbomApiUrl { get; set; } = "http://127.0.0.1:9090/sbom";
+    public bool ResolveLicenses { get; set; }
 }

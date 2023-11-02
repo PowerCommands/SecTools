@@ -15,6 +15,8 @@ Returns  EPSS score for provided CVE, the value is percent where 0 is minimum an
 
 
 # Prerequisites
+I know the setup of this is a bit corky, just be aware of that, look at troubleshot if you have problems. 
+
 If this is the first time you use a Power Commands implementation a encryption setup will be done at the first startup. The encryption key is setup for all Power Commands projects and is unique for every machine. Encryption is used by this Power Commands project to secure your **Dependency Track** API key.
 
 This application is intended to use **CycloneDX** and **Dependency Track** software running as container, therefore you need to have Docker Desktop installed, this way you do not need to install software on your machine besides this Power Commands console application. Setup Docker Desktop is however not described in this documentation. 
@@ -79,12 +81,23 @@ If you add the --upload option, the sbom will also be uploaded to Dependency Tra
 
 ```sbom --path https://github.com/PowerCommands/PowerCommands2022.git --NAME <my-sbom-name> --upload```
 
+### Resolve licenses
+By default resolving licenses is turned off because it is a very time consuming process. If you need this you need to configure this in the ```PowerCommandsConfiguration.yaml``` configuration file. 
+```
+cdxgen:  
+  resolveLicenses: true
+```
+This has to be done before the container has been started so if it is already running you need to stop the container first and restart it with the ```start``` command. There will be some warning about the Dependency Track container already running but that is nothing to worry about.
 ___
 
 ## Trouble shoot
 If you having trouble to start Dependency Track or login from Dependency Track, open Docker Desktop and make sure that the containers is running.
 
 <img src="containers_running.png" alt="Docker Containers running" width="800">
+
+Also check the ```PowerCommandsConfiguration.yaml``` configuration file that the path to the directory where SBOM is stored is correct and exists.
+
+```sdxGenServerVolumeMount: C:\Temp\Cdxgen_server```
 
 ## Power Commands
 

@@ -1,9 +1,10 @@
 ﻿namespace SecToolsCommands.Managers;
 public static class CycloneDxManager
 {
-    public static void Start(string hostMount, string containerMount, string hostPort, string containerPort, string sdxGenServerVolumeMount, string imageUrl, string serverHost)
+    public static void Start(string hostMount, string containerMount, string hostPort, string containerPort, string sdxGenServerVolumeMount, string imageUrl, string serverHost, bool resolveLicenses = false)
     {
-        var arguments = $"run --rm -v {hostMount}:{containerMount} -p {hostPort}:{containerPort} -v {sdxGenServerVolumeMount}:/app:rw -t {imageUrl} -r /app --server --server-host {serverHost} --restart unless-stopped";
+        var resolveLicenseEnvironmentVariable = resolveLicenses ? "--env FETCH_LICENSE=true" : "";
+        var arguments = $"run --rm -v {hostMount}:{containerMount} {resolveLicenseEnvironmentVariable} -p {hostPort}:{containerPort} -v {sdxGenServerVolumeMount}:/app:rw -t {imageUrl} -r /app --server --server-host {serverHost} --restart unless-stopped";
         ShellService.Service.Execute("docker", arguments, "");
         ConsoleService.Service.WriteSuccessLine(nameof(CycloneDxManager), "CycloneDX Generator server ready!");
     }

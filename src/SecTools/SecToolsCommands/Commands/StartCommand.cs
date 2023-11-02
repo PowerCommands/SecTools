@@ -15,7 +15,7 @@ public class StartCommand : CommandBase<PowerCommandsConfiguration>
         DockerDesktopManager.StartDockerDesktop(fullFileName, Configuration.DockerDesktop.StartupTime);
 
         var xCfg = Configuration.Cdxgen;
-        CycloneDxManager.Start(xCfg.HostMount, xCfg.ContainerMount, xCfg.HostPort, xCfg.ContainerPort, xCfg.SdxGenServerVolumeMount, xCfg.ImageUrl, xCfg.ServerHost);
+        CycloneDxManager.Start(xCfg.HostMount, xCfg.ContainerMount, xCfg.HostPort, xCfg.ContainerPort, xCfg.SdxGenServerVolumeMount, xCfg.ImageUrl, xCfg.ServerHost, xCfg.ResolveLicenses);
 
         var dCfg = Configuration.DependencyTracker;
         DependencyTrackManager.Start(dCfg.ApiUrl, dCfg.ApiServerImage, dCfg.ApiServerContainer, dCfg.ApiPorts, dCfg.FrontendImage, dCfg.FrontendContainer, dCfg.FrontendPorts, dCfg.AdminUrl, dCfg.StartupTime);
